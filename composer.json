@@ -1,0 +1,40 @@
+{
+  "name": "stein/stein",
+  "description": "Awesome DDD oriented framework, built around FrankenPHP",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Stein\\": "src/"
+    },
+    "files": [
+      "bootstrap/defines.inc.php",
+      "bootstrap/helpers.php",
+      "bootstrap/env.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Alexandre Debusschère",
+      "email": "alexandre@kosmonaft.dev"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "stein/framework": "dev-main",
+    "vlucas/phpdotenv": "^5.6",
+    "league/container": "^4.2",
+    "guzzlehttp/guzzle": "^7.0",
+    "netresearch/jsonmapper": "^4.4",
+    "monolog/monolog": "^3.7"
+  },
+  "scripts": {
+    "post-create-project-cmd": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "STEIN_TEMP_KEYGEN=`openssl rand -base64 32`;sed -i \"s|APP_KEY=|APP_KEY=$STEIN_TEMP_KEYGEN|g\" .env"
+    ],
+    "serve": [
+      "Composer\\Config::disableProcessTimeout",
+      "docker run -e FRANKENPHP_CONFIG=\"worker ./public/worker.php\" -v $PWD:/app -p 80:8080 -p 443:443 -p 443:443/udp --tty dunglas/frankenphp"
+    ]
+  }
+}
