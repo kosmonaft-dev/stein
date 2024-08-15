@@ -31,7 +31,7 @@ function env(string $key, mixed $default = null): mixed
  */
 function isProduction(): bool
 {
-    return env('APP_ENV') == 'production';
+    return strtolower(env('APP_ENV')) == 'production';
 }
 
 /**

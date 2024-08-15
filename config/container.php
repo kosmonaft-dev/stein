@@ -29,18 +29,19 @@ $container->defaultToShared();
 
 // Definitions
 $container->add(RouterInterface::class, function () {
-    $isProduction = env('APP_ENV') == 'production';
+    $isProduction = isProduction();
 
     $router = new FastRouteRouter(
         cache_file: cache_path('routes.cache.php'),
         cache_disabled: !$isProduction
     );
 
-    if ($isProduction && file_exists(cache_path('routes.cache.php'))) {
-        return $router;
-    }
-
-    $controller_loader = new ControllerLoader([__ROOT_DIR__.'/src/Api/Controller'], $router);
+    $controller_loader = new ControllerLoader(
+        directories: [__ROOT_DIR__.'/src/Api/Controller'],
+        router: $router,
+        use_cache: $isProduction,
+        cache_file: cache_path('controllers.cache.php')
+    );
     $controller_loader->loadRoutes();
 
     return $router;
