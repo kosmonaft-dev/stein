@@ -2,7 +2,9 @@
 
 ## Description
 
-Awesome DDD oriented framework, built around FrankenPHP.
+Awesome DDD oriented framework, built around FrankenPHP.  
+
+It is best suited for microservices and small to medium-sized applications, but can be used for larger applications as well.
 
 ## Getting Started
 
@@ -41,6 +43,63 @@ composer serve
 - `src/`: Source code for the application.
 - `public/`: Publicly accessible files, including the entry point (`index.php`).
 - `storage/`: Storage for logs, cache, and other generated files.
+
+## Route Definition Using Attributes
+
+Routes in this framework are defined using PHP attributes.  
+This allows you to annotate your controller methods with route information directly and keep everything in one place.
+
+It is also possible to give more instruction to a controller method via attributes, such as the HTTP methods it should
+respond to or if it should fetch a parameter from the request body or query parameter.
+
+### Example
+
+```php
+namespace Stein\Api\Controller;
+
+use ...;
+
+#[ApiController] // This attribute tells the framework that this class is a controller.
+#[Route('/api/pokemon')] // This attribute tells the framework that this controller is responsible for the /api/pokemon base route.
+class PokemonController
+{
+
+    public function __construct(
+        protected PokemonHandler $handler,
+        protected JsonMapper $mapper
+    ) {}
+
+    #[HttpGet] // This attribute tells the framework that this method should respond to GET requests.
+    #[RouteName('getPokemonList')] // This attribute gives a name to the route.
+    #[Produces('application/json')] // This attribute tells the framework that this method produces JSON responses.
+    #[ProducesResponseType(PokemonListViewModel::class, 200)] // This attribute tells the framework that this method can return a PokemonListViewModel on success.
+    #[ProducesResponseType(ProblemDetails::class, 500)] // This attribute tells the framework that this method can return a ProblemDetails on error.
+    public function getPokemonList(#[FromQuery] int $offset = 0, #[FromQuery] int $limit = 20): ResponseInterface
+    {
+        // $offset and $limit are fetched from the query parameters of the request.
+
+        $pokemon_list = $this->handler->getPokemonList($offset, $limit);
+        $view_model = $this->mapper->map($pokemon_list, PokemonListViewModel::class);
+
+        return new JsonResponse($view_model);
+    }
+
+    #[HttpGet('/{id:\d+}')] // This attribute tells the framework that this method should respond to GET requests with a numeric id.
+                            // Therefore, the URL that reaches this method should be /api/pokemon/{id}.
+    #[RouteName('getPokemonById')]
+    #[Produces('application/json')]
+    #[ProducesResponseType(PokemonViewModel::class, 200)]
+    #[ProducesResponseType(ProblemDetails::class, 404)]
+    #[ProducesResponseType(ProblemDetails::class, 500)]
+    public function getPokemonById(string $id): ResponseInterface
+    {
+        $pokemon = $this->handler->getPokemonById($id);
+        $view_model = $this->mapper->map($pokemon, PokemonViewModel::class);
+
+        return new JsonResponse($view_model);
+    }
+}
+```
 
 ## Contributing
 
