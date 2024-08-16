@@ -1,5 +1,5 @@
 <p align="center"><img src="https://www.dropbox.com/scl/fi/o1rohkpzh3fyodu3dwr7u/carbon.png?rlkey=grb9c7tco3t008uzlf1pf0byb&raw=1" alt="Example"></p>
-<h1 align="center">Stein PHP</h1>
+<h1 align="center">Stein Framework</h1>
 <p align="center">Awesome DDD oriented framework, built around FrankenPHP.</p>
 <br/>
 
