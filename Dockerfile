@@ -9,4 +9,7 @@ ENV SERVER_NAME=:80
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Copy the PHP files of your project in the public directory
-COPY . /app/public
+COPY . /app
+
+RUN composer install
+RUN composer dump-autoload -o --no-dev
