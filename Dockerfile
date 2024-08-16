@@ -8,6 +8,9 @@ ENV SERVER_NAME=:80
 # Enable PHP production settings
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
+# Install unzip
+RUN apt-get update && apt-get install -y unzip
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -21,6 +24,7 @@ WORKDIR /app
 RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 80
+# EXPOSE 443
 
 # Command to run the application
-CMD ["frankenphp", "serve", "--config", "/app/public/worker.php"]
+CMD ["frankenphp", "php-server", "--worker", "/app/public/worker.php"]
