@@ -7,7 +7,7 @@ use Monolog\{Handler\StreamHandler, Level, Logger, Processor\PsrLogMessageProces
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Stein\Framework\Application\{ControllerLoader, RequestHandler};
+use Stein\Framework\Application\{RequestHandler};
 use Stein\Framework\Http\Middleware\{BodyParserMiddleware,
     ContentLengthMiddleware,
     DispatchMiddleware,
@@ -19,7 +19,7 @@ use Stein\Framework\Http\Middleware\{BodyParserMiddleware,
     RouteMiddleware,
     TrailingSlashMiddleware,
     UploadedFilesParserMiddleware};
-use Stein\Framework\Router\{FastRouteRouter, RouterInterface};
+use Stein\Framework\Router\{ControllerRouteMapper, FastRouteRouter, RouterInterface};
 use Psr\Log\LoggerInterface;
 
 $container = new Container();
@@ -36,13 +36,19 @@ $container->add(RouterInterface::class, function () {
         cache_disabled: !$isProduction
     );
 
-    $controller_loader = new ControllerLoader(
-        directories: [__ROOT_DIR__.'/src/Api/Controller'],
+    $mapper = new ControllerRouteMapper(
         router: $router,
-        use_cache: $isProduction,
-        cache_file: cache_path('controllers.cache.php')
+        cache_file: cache_path('controllers.cache.php'),
+        cache_disabled: !$isProduction
     );
-    $controller_loader->loadRoutes();
+
+    // You can insert your controllers here for better performance
+    $mapper->mapByClassString([
+        \Stein\Api\Controller\IndexController::class,
+        \Stein\Api\Controller\PokemonController::class,
+    ]);
+    // Or load them from the file system (if you're lazy)
+    // $mapper->mapByDirectory(__ROOT_DIR__.'/src/Api/Controller');
 
     return $router;
 });
