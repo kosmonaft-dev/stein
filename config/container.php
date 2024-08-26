@@ -79,7 +79,7 @@ $container
 $container->add(ServerRequestInterface::class, fn() => ServerRequestFactory::fromGlobals());
 
 $container->add(LoggerInterface::class, fn() => new Logger(
-    env('LOG_CHANNEL'),
+    env('LOG_CHANNEL', 'app'),
     [
         new StreamHandler(
             'php://stdout',

@@ -5,6 +5,7 @@ namespace Stein\Domain\Pokemon\Handler;
 use JsonMapper;
 use Stein\Domain\Pokemon\Entity\{PokemonEntity, PokemonListEntity};
 use Stein\Infrastructure\Pokemon\Client\PokemonClient;
+use function array_map, str_replace;
 
 class PokemonHandler
 {

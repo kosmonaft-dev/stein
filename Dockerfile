@@ -5,6 +5,18 @@ FROM dunglas/frankenphp
 # If you want to disable HTTPS, use this value instead:
 ENV SERVER_NAME=:80
 
+# Port to expose on PaaS
+ENV PORT=32768
+
+# Set the worker command
+ENV FRANKENPHP_CONFIG="worker ./public/worker.php"
+
+# Set the environment variables
+# Should be set in the PaaS directly
+# ENV APP_ENV=production
+# ENV APP_DEBUG=false
+# ENV APP_URL=http://localhost:32768/
+
 # Enable PHP production settings
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
@@ -21,10 +33,4 @@ COPY . /app
 WORKDIR /app
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader
-
-EXPOSE 80
-# EXPOSE 443
-
-# Command to run the application
-CMD ["frankenphp", "php-server", "--worker", "/app/public/worker.php"]
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
