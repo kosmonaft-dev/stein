@@ -30,6 +30,7 @@
   "scripts": {
     "post-create-project-cmd": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "STEIN_TEMP_APPNAME=`basename $PWD`;sed -i \"s|APP_NAME=|APP_NAME=$STEIN_TEMP_APPNAME|g\" .env",
       "STEIN_TEMP_KEYGEN=`openssl rand -base64 32`;sed -i \"s|APP_KEY=|APP_KEY=$STEIN_TEMP_KEYGEN|g\" .env"
     ],
     "serve": [
