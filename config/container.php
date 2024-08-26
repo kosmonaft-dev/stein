@@ -60,7 +60,7 @@ $container
 
         $handler = new RequestHandler();
         $handler
-            ->middleware(new ErrorHandlerMiddleware($logger))
+            ->middleware(new ErrorHandlerMiddleware($logger, isProduction()))
             ->middleware(new TrailingSlashMiddleware())
             ->middleware(new ContentLengthMiddleware())
             ->middleware(new RouteMiddleware($router, $container))

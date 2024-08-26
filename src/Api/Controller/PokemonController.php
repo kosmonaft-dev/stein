@@ -40,7 +40,7 @@ class PokemonController
     #[ProducesResponseType(PokemonViewModel::class, 200)]
     #[ProducesResponseType(ProblemDetails::class, 404)]
     #[ProducesResponseType(ProblemDetails::class, 500)]
-    public function getPokemonById(string $id): ResponseInterface
+    public function getPokemonById(int $id): ResponseInterface
     {
         $pokemon = $this->handler->getPokemonById($id);
         $view_model = $this->mapper->map($pokemon, PokemonViewModel::class);
