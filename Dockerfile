@@ -5,9 +5,6 @@ FROM dunglas/frankenphp
 # If you want to disable HTTPS, use this value instead:
 ENV SERVER_NAME=:80
 
-# Port to expose on PaaS
-ENV PORT=32768
-
 # Set the worker command
 ENV FRANKENPHP_CONFIG="worker ./public/worker.php"
 
