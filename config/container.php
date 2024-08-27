@@ -81,6 +81,7 @@ $container->add(ServerRequestInterface::class, fn() => ServerRequestFactory::fro
 $container->add(LoggerInterface::class, fn() => new Logger(
     env('LOG_CHANNEL', 'app'),
     [
+        new StreamHandler('php://stderr', Level::Error, false),
         new StreamHandler(
             'php://stdout',
             env('LOG_LEVEL', Level::Debug)
