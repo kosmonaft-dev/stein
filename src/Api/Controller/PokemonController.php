@@ -11,7 +11,7 @@ use Stein\Framework\Attribute\{ApiController, FromQuery, HttpGet, Produces, Prod
 use Stein\Framework\Http\Error\ProblemDetails;
 
 #[ApiController]
-#[Route('/api/pokemon')]
+#[Route('/api/pokemon', 2)]
 class PokemonController
 {
 
