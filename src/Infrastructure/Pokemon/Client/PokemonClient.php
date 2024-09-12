@@ -18,23 +18,21 @@ class PokemonClient
 
     public function getPokemonList(int $offset, int $limit): PokemonListDto
     {
-        $response = $this->client->request('GET', '/api/v2/pokemon?'.http_build_query(['offset' => $offset, 'limit' => $limit]));
-        if ($response->getStatusCode() !== 200) {
-            $exception = new ApiCallException('An error occurred.');
-            $exception->status_code = $response->getStatusCode();
-            $exception->reason_phrase = $response->getReasonPhrase();
-
-            throw $exception;
-        }
-
-        $results = json_decode($response->getBody()->getContents());
+        $results = $this->call('/api/v2/pokemon?'.http_build_query(['offset' => $offset, 'limit' => $limit]));
 
         return $this->mapper->map($results, PokemonListDto::class);
     }
 
     public function getPokemonById(int $id): PokemonDto
     {
-        $response = $this->client->request('GET', '/api/v2/pokemon/'.$id);
+        $result = $this->call('/api/v2/pokemon/'.$id);
+
+        return $this->mapper->map($result, PokemonDto::class);
+    }
+
+    private function call(string $uri): mixed
+    {
+        $response = $this->client->request('GET', $uri);
         if ($response->getStatusCode() !== 200) {
             $exception = new ApiCallException('An error occurred.');
             $exception->status_code = $response->getStatusCode();
@@ -43,8 +41,6 @@ class PokemonClient
             throw $exception;
         }
 
-        $result = json_decode($response->getBody()->getContents());
-
-        return $this->mapper->map($result, PokemonDto::class);
+        return json_decode($response->getBody()->getContents());
     }
 }
