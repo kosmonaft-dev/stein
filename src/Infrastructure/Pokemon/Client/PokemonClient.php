@@ -18,16 +18,7 @@ class PokemonClient
 
     public function getPokemonList(int $offset, int $limit): PokemonListDto
     {
-        $response = $this->client->request('GET', '/api/v2/pokemon?'.http_build_query(['offset' => $offset, 'limit' => $limit]));
-        if ($response->getStatusCode() !== 200) {
-            $exception = new ApiCallException('An error occurred.');
-            $exception->status_code = $response->getStatusCode();
-            $exception->reason_phrase = $response->getReasonPhrase();
-
-            throw $exception;
-        }
-
-        $results = json_decode($response->getBody()->getContents());
+        $results = $this->call('/api/v2/pokemon?'.http_build_query(['offset' => $offset, 'limit' => $limit]));
 
         return $this->mapper->map($results, PokemonListDto::class);
     }
