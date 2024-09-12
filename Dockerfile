@@ -8,12 +8,6 @@ ENV SERVER_NAME=:80
 # Set the worker command
 ENV FRANKENPHP_CONFIG="worker ./public/worker.php"
 
-# Set the environment variables
-# Should be set in the PaaS directly
-# ENV APP_ENV=production
-# ENV APP_DEBUG=false
-# ENV APP_URL=http://localhost:32768/
-
 # Enable PHP production settings
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 

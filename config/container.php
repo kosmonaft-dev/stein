@@ -46,6 +46,7 @@ $container->add(RouterInterface::class, function () {
     $mapper->mapByClassString([
         \Stein\Api\Controller\IndexController::class,
         \Stein\Api\Controller\PokemonController::class,
+        \Stein\Api\Controller\HealthController::class,
     ]);
     // Or load them from the file system (if you're lazy)
     // $mapper->mapByDirectory(__ROOT_DIR__.'/src/Api/Controller');

@@ -5,14 +5,13 @@ namespace Stein\Api\Controller;
 use JsonMapper;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
-use Stein\Api\Controller\ViewModel\PokemonListViewModel;
-use Stein\Api\Controller\ViewModel\PokemonViewModel;
+use Stein\Api\Controller\ViewModel\{PokemonListViewModel, PokemonViewModel};
 use Stein\Domain\Pokemon\Handler\PokemonHandler;
 use Stein\Framework\Attribute\{ApiController, FromQuery, HttpGet, Produces, ProducesResponseType, Route, RouteName};
 use Stein\Framework\Http\Error\ProblemDetails;
 
 #[ApiController]
-#[Route('/api/pokemon')]
+#[Route('/api/pokemon', 2)]
 class PokemonController
 {
 
